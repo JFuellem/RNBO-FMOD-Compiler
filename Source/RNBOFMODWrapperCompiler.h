@@ -13,7 +13,7 @@
 #include <JuceHeader.h>
 #include <string>
 #include <cstdlib>
-#include <unistd.h>
+//#include <unistd.h>
 #include "RNBOFMODConsole.h"
 
 class CommandlineThread : public juce::Thread

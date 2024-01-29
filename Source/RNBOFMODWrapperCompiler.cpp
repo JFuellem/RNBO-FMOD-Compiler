@@ -169,16 +169,20 @@ bool RNBOFMODCompiler::CheckCmakeInstall()
 {
     juce::File appDir = juce::File::getSpecialLocation(juce::File::SpecialLocationType::currentApplicationFile);
 
+#if JUCE_MAC
     cmakeDir = appDir.getChildFile("Contents/Resources/External_Tools/CMake.app/Contents/bin/cmake");
+#elif JUCE_WINDOWS
+    cmakeDir = appDir.getSiblingFile("CMakeWin\\bin\\cmake.exe");
+#endif
 
-
-    std::string command = cmakeDir.getFullPathName().toStdString() + " --version";
+    std::string command = cmakeDir.getFullPathName().toStdString() + " --help";
     
     juce::ChildProcess process;
     int result = -1;
     if(process.start(command.c_str()))
     {
-        //juce::String result = process.readAllProcessOutput();
+        //std::string output = process.readAllProcessOutput().toStdString();
+        //std::cout << output.c_str() << std::endl;
         process.waitForProcessToFinish(3000);
         result = process.getExitCode();
     }

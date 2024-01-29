@@ -201,7 +201,7 @@ void MainComponent::LoadAndApplyState()
         if(valueTree.hasProperty("exportDir"))
             exportDir->setCurrentFile(juce::File(valueTree.getProperty("exportDir")), false);
         if(valueTree.hasProperty("PluginName"))
-            pluginNameInputLabel->setText(juce::String(valueTree.getProperty("PluginName")), juce::sendNotification);
+            pluginNameInputLabel->setText(juce::String(valueTree.getProperty("PluginName").toString()), juce::sendNotification);
 
     }
         
