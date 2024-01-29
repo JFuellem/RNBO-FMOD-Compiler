@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="cUWCBc" name="RNBO-Fmod-Compiler" projectType="guiapp" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
+              bundleIdentifier="com.jonasfuellemann.RNBOFmodCompiler" companyWebsite="www.jrfsound.ch"
+              companyEmail="kontakt@jrfsound.ch">
+  <MAINGROUP id="hVcS7T" name="RNBO-Fmod-Compiler">
+    <GROUP id="{EDC1B696-AD83-1FAF-F93F-2451FCD539FA}" name="Icons">
+      <FILE id="iWNz7n" name="appicon.png" compile="0" resource="1" file="Icons/appicon.png"/>
+    </GROUP>
+    <GROUP id="{7747F114-08EA-8AD7-92A6-D0B9E58BD5F6}" name="Source">
+      <FILE id="jVydcS" name="RNBOFMODConsole.cpp" compile="1" resource="0"
+            file="Source/RNBOFMODConsole.cpp"/>
+      <FILE id="d7qEgJ" name="RNBOFMODConsole.h" compile="0" resource="0"
+            file="Source/RNBOFMODConsole.h"/>
+      <FILE id="SgGiWV" name="AdditionalWindows.h" compile="0" resource="0"
+            file="Source/AdditionalWindows.h"/>
+      <FILE id="n0DHDV" name="RNBOFMODWrapperCompiler.cpp" compile="1" resource="0"
+            file="Source/RNBOFMODWrapperCompiler.cpp"/>
+      <FILE id="Zvw32o" name="RNBOFMODWrapperCompiler.h" compile="0" resource="0"
+            file="Source/RNBOFMODWrapperCompiler.h"/>
+      <FILE id="HcbG0C" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <FILE id="CRSSXQ" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
+      <FILE id="AunygU" name="MainComponent.cpp" compile="1" resource="0"
+            file="Source/MainComponent.cpp"/>
+    </GROUP>
+  </MAINGROUP>
+  <MODULES>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX" customXcodeResourceFolders="./External_Tools&#10;./RNBOFMODSrc"
+               appSandboxOptions="com.apple.security.assets.movies.read-only,com.apple.security.assets.movies.read-write,com.apple.security.assets.music.read-only,com.apple.security.assets.music.read-write,com.apple.security.files.downloads.read-only,com.apple.security.files.downloads.read-write,com.apple.security.files.pictures.read-only,com.apple.security.files.pictures.read-write,com.apple.security.files.user-selected.read-only,com.apple.security.files.user-selected.read-write"
+               smallIcon="iWNz7n" bigIcon="iWNz7n">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="RNBO-Fmod-Compiler"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="RNBO-Fmod-Compiler"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="../../../../../Applications/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../../../../Applications/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../../../../Applications/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../../../../Applications/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../../../../Applications/JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+    <VS2019 targetFolder="Builds/VisualStudio2019" smallIcon="iWNz7n" bigIcon="iWNz7n">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug"/>
+        <CONFIGURATION isDebug="0" name="Release"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="/Applications/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="/Applications/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="/Applications/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="/Applications/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="/Applications/JUCE/modules"/>
+      </MODULEPATHS>
+    </VS2019>
+  </EXPORTFORMATS>
+</JUCERPROJECT>
