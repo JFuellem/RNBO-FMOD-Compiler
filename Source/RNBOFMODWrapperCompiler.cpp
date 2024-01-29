@@ -220,6 +220,31 @@ bool RNBOFMODCompiler::CheckCompilerInstall()
     return !result;
 }
 
+bool RNBOFMODCompiler::TryRemoveNinjaQuarantine()
+{
+    if(!ninjaDir.existsAsFile())
+        return 0;
+    
+    std::string command = "xattr -dr com.apple.quarantine" + ninjaDir.getFullPathName().toStdString();
+    
+    juce::ChildProcess process;
+    int result = -1;
+    int finalResult = -1;
+    if(process.start(command.c_str()))
+    {
+        //juce::String result = process.readAllProcessOutput();
+        process.waitForProcessToFinish(3000);
+        result = process.getExitCode();
+    }
+    
+    if(result)
+        JRFConsole::err << "Failed to remove quarantine..." << std::endl;
+    else
+        finalResult = CheckCompilerInstall();
+    
+    return finalResult;
+}
+
 bool RNBOFMODCompiler::CheckRNBOSrc()
 {
     //the file with the rnbo export class

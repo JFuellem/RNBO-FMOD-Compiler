@@ -37,9 +37,12 @@ public:
         else
         {
             setColour(juce::AlertWindow::textColourId, juce::Colours::red);
-            addTextBlock("Compiler not detected...");
+            addTextBlock("Compiler not detected or some write permission stuff...");
+#ifdef JUCE_MAC
             setColour(juce::AlertWindow::textColourId, juce::Colours::white);
-            addTextBlock("You're hopefully prompted to install it. Please do.");
+            addTextBlock("We're using ninja which is bundled in this application. You can try removing the quarantine by pressing this button:");
+            addButton("Try Remove Quarantine", 0);
+#endif
         }
         
         
@@ -52,7 +55,10 @@ public:
         setBounds(placement.appliedTo (getBounds(), getDisplayArea()));
         setVisible(true);
         setEscapeKeyCancels(true);
-        enterModalState(true, nullptr, true);
+        enterModalState(true, juce::ModalCallbackFunction::create([this](bool result)
+        {
+            rnbofmodCompiler.TryRemoveNinjaQuarantine();
+        }), true);
     }
 private:
     RNBOFMODCompiler rnbofmodCompiler;

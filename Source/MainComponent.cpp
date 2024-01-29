@@ -40,11 +40,15 @@ MainComponent::MainComponent() : valueTree("Directories")
     pluginNameInputLabel.reset(new juce::Label());
     pluginNameInputLabel->setFont(juce::Font (27.0f));
     pluginNameInputLabel->setColour (juce::Label::backgroundColourId, juce::Colours::darkgrey);
-    pluginNameInputLabel->setText("Plugin Name", juce::sendNotification);
+    pluginNameInputLabel->setText("Plugin_Name", juce::sendNotification);
     pluginNameInputLabel->setJustificationType(juce::Justification::centred);
     pluginNameInputLabel->setEditable(true);
     pluginNameInputLabel->onTextChange = [this]
     {
+        juce::String inputText = pluginNameInputLabel->getText();
+        juce::String filteredText = inputText.removeCharacters(" ");
+        if(inputText != filteredText)
+            pluginNameInputLabel->setText(filteredText, juce::NotificationType::dontSendNotification);
         valueTree.setProperty("PluginName", pluginNameInputLabel->getText(), nullptr);
         rnboFmodCompiler->PluginName = pluginNameInputLabel->getText().toStdString();
         
