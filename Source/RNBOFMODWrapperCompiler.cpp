@@ -135,7 +135,7 @@ bool RNBOFMODCompiler::CreateCMakeLists()
 bool RNBOFMODCompiler::CreateCMake()
 {
     juce::File cmakebuildfolder = juce::File(rnboDirectory).getChildFile("CMake");
-    juce::String command = cmakeDir.getFullPathName().toStdString() + " -S " + rnboDirectory + " -B " + cmakebuildfolder.getFullPathName().toStdString();
+    juce::String command = cmakeDir.getFullPathName().toStdString() + " -S " + rnboDirectory + " -B " + cmakebuildfolder.getFullPathName().toStdString() + " -G Ninja -DCMAKE_MAKE_PROGRAM=" + ninjaDir.getFullPathName().toStdString();
     
     cmdThread.startThreadWithCommand(command);
     cmdThread.waitForThreadToExit(60000);
@@ -192,13 +192,21 @@ bool RNBOFMODCompiler::CheckCmakeInstall()
 
 bool RNBOFMODCompiler::CheckCompilerInstall()
 {
+    juce::File appDir = juce::File::getSpecialLocation(juce::File::SpecialLocationType::currentApplicationFile);
+    
 #if JUCE_MAC
-    std::string command = "clang --version";
+    //std::string command = "clang --version";
+    ninjaDir = appDir.getChildFile("Contents/Resources/External_Tools/ninja");
 #elif JUCE_WINDOWS
     std::string command = "gcc --version";
 #else
     std::string command = "error";
 #endif
+    
+    if(!ninjaDir.existsAsFile())
+        return 0;
+    
+    std::string command = ninjaDir.getFullPathName().toStdString() + " --version";
     
     juce::ChildProcess process;
     int result = -1;

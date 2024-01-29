@@ -13,7 +13,6 @@
 #include <JuceHeader.h>
 #include <string>
 #include <cstdlib>
-//#include <unistd.h>
 #include "RNBOFMODConsole.h"
 
 class CommandlineThread : public juce::Thread
@@ -61,6 +60,7 @@ public:
     std::string rnboDirectory;
     
     juce::File cmakeDir;
+    juce::File ninjaDir;
 private:
     void CompilePlugin();
     bool CheckRNBOSrc();
