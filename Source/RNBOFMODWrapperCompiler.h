@@ -67,6 +67,7 @@ private:
     bool CheckRNBOSrc();
     bool CheckFMODAPIDir();
     bool CheckRNBOFMODSrcs();
+    bool CheckExportDir();
     bool CreateCMakeLists();
     bool CreateCMake();
     bool CompileCMake();

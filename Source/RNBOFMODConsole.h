@@ -33,7 +33,7 @@ protected:
         
         time(&rawTime);
         timeinfo = localtime(&rawTime);
-        strftime(buffer, sizeof(buffer), "%H:%M:%S: ", timeinfo);
+        strftime(buffer, sizeof(buffer), "%H:%M:%S ", timeinfo);
         std::string timestr(buffer);
         
         

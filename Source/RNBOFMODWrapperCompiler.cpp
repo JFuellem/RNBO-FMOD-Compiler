@@ -172,10 +172,10 @@ bool RNBOFMODCompiler::CheckCmakeInstall()
 #if JUCE_MAC
     cmakeDir = appDir.getChildFile("Contents/Resources/External_Tools/CMake.app/Contents/bin/cmake");
 #elif JUCE_WINDOWS
-    cmakeDir = appDir.getSiblingFile("CMakeWin\\bin\\cmake.exe");
+    cmakeDir = appDir.getSiblingFile("External_Tools\\CMakeWin\\bin\\cmake.exe");
 #endif
 
-    std::string command = cmakeDir.getFullPathName().toStdString() + " --help";
+    std::string command = cmakeDir.getFullPathName().toStdString() + " --version";
     
     juce::ChildProcess process;
     int result = -1;
@@ -198,7 +198,7 @@ bool RNBOFMODCompiler::CheckCompilerInstall()
     //std::string command = "clang --version";
     ninjaDir = appDir.getChildFile("Contents/Resources/External_Tools/ninja");
 #elif JUCE_WINDOWS
-    std::string command = "gcc --version";
+    ninjaDir = appDir.getSiblingFile("External_Tools\\ninja");
 #else
     std::string command = "error";
 #endif
@@ -237,10 +237,14 @@ bool RNBOFMODCompiler::TryRemoveNinjaQuarantine()
         result = process.getExitCode();
     }
     
+    //we have here a bit a confusing result mix as exit code positive is 0 but I'm returning nonzero as positive
     if(result)
         JRFConsole::err << "Failed to remove quarantine..." << std::endl;
     else
         finalResult = CheckCompilerInstall();
+    
+    if(!finalResult)
+        JRFConsole::err << "Even though it succeeded removing the quarantine it still didn't recognise the compiler.." << std::endl;
     
     return finalResult;
 }
@@ -269,6 +273,17 @@ bool RNBOFMODCompiler::CheckFMODAPIDir()
     return result;
 }
 
+bool RNBOFMODCompiler::CheckExportDir()
+{
+    if(juce::File(exportDirectory).exists())
+        return true;
+    else
+    {
+        JRFConsole::err << "The Export directory doesn't exist, please create an export folder." << std::endl;
+        return false;
+    }
+}
+
 bool RNBOFMODCompiler::CheckRNBOFMODSrcs()
 {
     juce::File appDir = juce::File::getSpecialLocation(juce::File::SpecialLocationType::currentApplicationFile);
@@ -293,7 +308,7 @@ bool RNBOFMODCompiler::CheckStaticCompileComponents()
 
 bool RNBOFMODCompiler::CheckDynamicCompileComponents()
 {
-    return CheckFMODAPIDir() && CheckRNBOSrc() && CheckFMODAPIDir();
+    return CheckFMODAPIDir() && CheckRNBOSrc() && CheckFMODAPIDir() && CheckExportDir();
 }
 
 void CommandlineThread::run()

@@ -93,7 +93,7 @@ public:
         
         JRFConsole::init(consoleEditor);
     }
-    void closeButtonPressed() override {}
+    void closeButtonPressed() override { setVisible(false); }
     
 private:
     juce::TextEditor consoleEditor;
