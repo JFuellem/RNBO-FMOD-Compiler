@@ -191,13 +191,11 @@ std::string MainComponent::TryGetPluginName()
         while(!instream.isExhausted())
         {
             line = instream.readNextLine();
-            
             if(line.contains("Name_"))
             {
                 juce::String temp = line.fromFirstOccurrenceOf("Name_", false, true);
                 return temp.upToFirstOccurrenceOf("\"", false, true).toStdString();
             }
-               
         }
     }
     else
