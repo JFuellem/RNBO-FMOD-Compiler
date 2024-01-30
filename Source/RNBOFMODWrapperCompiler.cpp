@@ -232,9 +232,7 @@ bool RNBOFMODCompiler::CheckCompilerInstall()
     minGWlibDir = appDir.getSiblingFile("External_Tools").getChildFile("w64devkit").getChildFile("bin");
     if (!minGWlibDir.exists())
         return 0;
-    //std::string command = "set \"PATH=%PATH%;" + minGWlibDir.getFullPathName().toStdString() + "\" && gcc --version";
     std::string command = "set \"PATH=" + minGWlibDir.getFullPathName().toStdString() + "\" && gcc --version";
-    //std::string command = "cmake --version";
 #else
     std::string command = "error";
 #endif

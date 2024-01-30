@@ -162,6 +162,8 @@ void MainComponent::filenameComponentChanged(juce::FilenameComponent *fileCompon
         juce::String temp = rnboDir->getCurrentFile().getFullPathName();
         valueTree.setProperty("rnboDir", temp, nullptr);
         rnboFmodCompiler->rnboDirectory = temp.toStdString();
+        
+        pluginNameInputLabel->setText(TryGetPluginName(), juce::NotificationType::dontSendNotification);
     }
     else if(fileComponentThatHasChanged == fmodIncDir.get())
     {
@@ -175,6 +177,33 @@ void MainComponent::filenameComponentChanged(juce::FilenameComponent *fileCompon
         valueTree.setProperty("exportDir", temp, nullptr);
         rnboFmodCompiler->exportDirectory = temp.toStdString();
     }
+}
+
+std::string MainComponent::TryGetPluginName()
+{
+    juce::File rnboSrc = juce::File(rnboFmodCompiler->rnboDirectory).getChildFile("rnbo_source.cpp");
+    if(rnboSrc.existsAsFile())
+    {
+        juce::FileInputStream instream(rnboSrc);
+        if(!instream.openedOk())
+            return "DefaultName";
+        juce::String line;
+        while(!instream.isExhausted())
+        {
+            line = instream.readNextLine();
+            
+            if(line.contains("Name_"))
+            {
+                juce::String temp = line.fromFirstOccurrenceOf("Name_", false, true);
+                return temp.upToFirstOccurrenceOf("\"", false, true).toStdString();
+            }
+               
+        }
+    }
+    else
+        JRFConsole::warn << "The selected RNBO Directory is likely wrong." << std::endl;
+    
+    return "DefaultName";
 }
 
 void MainComponent::SaveState()

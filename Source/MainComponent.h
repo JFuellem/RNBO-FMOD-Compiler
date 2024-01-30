@@ -34,6 +34,8 @@ private:
     juce::Component::SafePointer<StaticCompileComponentsAlertWindow> alertWindow;
     juce::Component::SafePointer<ConsoleWindow> consoleWindow;
     
+    std::string TryGetPluginName();
+    
     std::unique_ptr<juce::FilenameComponent> rnboDir;
     std::unique_ptr<juce::FilenameComponent> fmodIncDir;
     std::unique_ptr<juce::FilenameComponent> exportDir;
