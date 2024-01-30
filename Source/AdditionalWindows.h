@@ -55,10 +55,13 @@ public:
         setBounds(placement.appliedTo (getBounds(), getDisplayArea()));
         setVisible(true);
         setEscapeKeyCancels(true);
+        /*
         enterModalState(true, juce::ModalCallbackFunction::create([this](bool result)
         {
-            rnbofmodCompiler.TryRemoveNinjaQuarantine();
+            //rnbofmodCompiler.TryRemoveNinjaQuarantine();
         }), true);
+        */
+        enterModalState(true, nullptr, true);
     }
 private:
     RNBOFMODCompiler rnbofmodCompiler;

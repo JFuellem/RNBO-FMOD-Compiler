@@ -50,7 +50,7 @@ public:
     bool CheckDynamicCompileComponents();
     bool CheckCmakeInstall();
     bool CheckCompilerInstall();
-    bool TryRemoveNinjaQuarantine();
+    //bool TryRemoveNinjaQuarantine();
     
     void addCompileListener(CompileListener* listener) { compileListeners.add(listener); }
     void removeCompileListener(CompileListener* listener) { compileListeners.remove(listener); }
@@ -61,7 +61,9 @@ public:
     std::string rnboDirectory;
     
     juce::File cmakeDir;
-    juce::File ninjaDir;
+#if JUCE_WINDOWS
+    juce::File minGWlibDir;
+#endif
 private:
     void CompilePlugin();
     bool CheckRNBOSrc();

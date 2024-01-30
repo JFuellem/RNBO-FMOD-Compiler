@@ -84,46 +84,66 @@ bool RNBOFMODCompiler::CreateCMakeLists()
 
     if(cmakelistsFile.existsAsFile())
         JRFConsole::warn << "Cmakefile exists and will be overridden. This is not a problem." << std::endl;
-    
-    juce::TemporaryFile tempFile (cmakelistsFile);
-    juce::FileOutputStream outStream (tempFile.getFile());
-
+#ifdef JUCE_MAC
     std::string trnboWrapperHpp = rnbowrapperHpp.getFullPathName().toStdString() + " ";
     std::string trnboWrapperCpp = rnborwapperCpp.getFullPathName().toStdString() + " ";
     std::string trnboFmodCpp = rnboFmod.getFullPathName().toStdString() + " ";
     std::string trnboSrc1 = rnbo_src.getFullPathName().toStdString() + " ";
     std::string trnboSrc2 = rnbo_src2.getFullPathName().toStdString() + " ";
     std::string trnboSrc3 = rnbo_src3.getFullPathName().toStdString() + " ";
-    
-    if(!outStream.openedOk())
-    {
-        JRFConsole::err << "Error opening stream." << std::endl;
-        return false;
-    }
-    
-    outStream.setNewLineString("\n");
+    std::string trnboInc1 = rnboDir.getChildFile("rnbo").getFullPathName().toStdString();
+    std::string trnboInc2 = rnboDir.getChildFile("rnbo/common").getFullPathName().toStdString();
+#elif JUCE_WINDOWS
+    std::string trnboWrapperHpp = (rnbowrapperHpp.getFullPathName().replaceCharacters("\\", "/")).toStdString() + " ";
+    std::string trnboWrapperCpp = (rnborwapperCpp.getFullPathName().replaceCharacters("\\", "/")).toStdString() + " ";
+    std::string trnboFmodCpp = (rnboFmod.getFullPathName().replaceCharacters("\\", "/")).toStdString() + " ";
+    std::string trnboSrc1 = (rnbo_src.getFullPathName().replaceCharacters("\\", "/")).toStdString() + " ";
+    std::string trnboSrc2 = (rnbo_src2.getFullPathName().replaceCharacters("\\", "/")).toStdString() + " ";
+    std::string trnboSrc3 = (rnbo_src3.getFullPathName().replaceCharacters("\\", "/")).toStdString() + " ";
+    exportDirectory = juce::String(exportDirectory).replaceCharacters("\\", "/").toStdString();
+    std::string trnboInc1 = (rnboDir.getChildFile("rnbo").getFullPathName().replaceCharacters("\\", "/")).toStdString();
+    std::string trnboInc2 = (rnboDir.getChildFile("rnbo/common").getFullPathName().replaceCharacters("\\", "/")).toStdString();
+    fmodIncDirectory = juce::String(fmodIncDirectory).replaceCharacters("\\", "/").toStdString();
+#endif
 
-    outStream.writeText(juce::String("#This file was created with the RNBO-FMOD-Wrapper-Compiler. It's safe to delete if you feel like it.") + juce::newLine, false, false, nullptr);
-    outStream.writeText(juce::String("#CMAKE_HOST_SYSTEM_NAME") + juce::newLine, false, false, nullptr);
-    outStream.writeText(juce::String("cmake_minimum_required(VERSION 3.10.0)") + juce::newLine, false, false, nullptr);
-    outStream.writeText(juce::String("project(") + PluginName +")" + juce::newLine, false, false, nullptr);
-    outStream.writeText(juce::String("set(CMAKE_CXX_STANDARD 14)") + juce::newLine, false, false, nullptr);
-    //outStream.writeText(juce::String("set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ") + exportDirectory + ")" + juce::newLine, false, false, nullptr);
-    outStream.writeText(juce::String("add_library(${PROJECT_NAME} SHARED ") + trnboWrapperHpp  + trnboWrapperCpp + trnboFmodCpp + trnboSrc1 + trnboSrc2 + trnboSrc3 + ")" + juce::newLine, false, false, nullptr);
-    outStream.writeText(juce::String("set_target_properties(${PROJECT_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ") + exportDirectory + ")" + juce::newLine, false, false, nullptr);
-    
-    outStream.writeText(juce::String("target_include_directories(${PROJECT_NAME} PRIVATE ") + rnboDir.getChildFile("rnbo").getFullPathName().toStdString() + ")" + juce::newLine, false, false, nullptr);
-    outStream.writeText(juce::String("target_include_directories(${PROJECT_NAME} PRIVATE ") + rnboDir.getChildFile("rnbo/common").getFullPathName().toStdString() + ")" + juce::newLine, false, false, nullptr);
-    outStream.writeText(juce::String("target_include_directories(${PROJECT_NAME} PRIVATE ") + fmodIncDirectory + ")" + juce::newLine, false, false, nullptr);
-    
-    outStream.flush();
-    
-    if(outStream.getStatus().failed())
+    juce::TemporaryFile tempFile(cmakelistsFile);
     {
-        JRFConsole::err << "Outputstream failed." << std::endl;
-        return false;
+        
+        juce::FileOutputStream outStream(tempFile.getFile());
+
+        if (!outStream.openedOk())
+        {
+            JRFConsole::err << "Error opening stream." << std::endl;
+            return false;
+        }
+
+        outStream.setNewLineString("\n");
+
+        outStream.writeText(juce::String("#This file was created with the RNBO-FMOD-Wrapper-Compiler. It's safe to delete if you feel like it.") + juce::newLine, false, false, nullptr);
+        outStream.writeText(juce::String("#CMAKE_HOST_SYSTEM_NAME") + juce::newLine, false, false, nullptr);
+        outStream.writeText(juce::String("cmake_minimum_required(VERSION 3.10.0)") + juce::newLine, false, false, nullptr);
+        outStream.writeText(juce::String("project(") + PluginName + ")" + juce::newLine, false, false, nullptr);
+        outStream.writeText(juce::String("set(CMAKE_CXX_STANDARD 14)") + juce::newLine, false, false, nullptr);
+        //outStream.writeText(juce::String("set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ") + exportDirectory + ")" + juce::newLine, false, false, nullptr);
+        outStream.writeText(juce::String("add_library(${PROJECT_NAME} SHARED ") + trnboWrapperHpp + trnboWrapperCpp + trnboFmodCpp + trnboSrc1 + trnboSrc2 + trnboSrc3 + ")" + juce::newLine, false, false, nullptr);
+#if JUCE_MAC
+        outStream.writeText(juce::String("set_target_properties(${PROJECT_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ") + exportDirectory + ")" + juce::newLine, false, false, nullptr);
+#elif JUCE_WINDOWS
+        outStream.writeText(juce::String("set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ") + exportDirectory + ")" + juce::newLine, false, false, nullptr);
+#endif
+        outStream.writeText(juce::String("target_include_directories(${PROJECT_NAME} PRIVATE ") + trnboInc1 + ")" + juce::newLine, false, false, nullptr);
+        outStream.writeText(juce::String("target_include_directories(${PROJECT_NAME} PRIVATE ") + trnboInc2 + ")" + juce::newLine, false, false, nullptr);
+        outStream.writeText(juce::String("target_include_directories(${PROJECT_NAME} PRIVATE ") + fmodIncDirectory + ")" + juce::newLine, false, false, nullptr);
+
+        outStream.flush();
+
+
+        if (outStream.getStatus().failed())
+        {
+            JRFConsole::err << "Outputstream failed." << std::endl;
+            return false;
+        }
     }
-    
     bool result = tempFile.overwriteTargetFileWithTemporary();
     
     if(!result)
@@ -135,8 +155,18 @@ bool RNBOFMODCompiler::CreateCMakeLists()
 bool RNBOFMODCompiler::CreateCMake()
 {
     juce::File cmakebuildfolder = juce::File(rnboDirectory).getChildFile("CMake");
-    juce::String command = cmakeDir.getFullPathName().toStdString() + " -S " + rnboDirectory + " -B " + cmakebuildfolder.getFullPathName().toStdString() + " -G Ninja -DCMAKE_MAKE_PROGRAM=" + ninjaDir.getFullPathName().toStdString();
-    
+
+#if JUCE_MAC
+    juce::String command = cmakeDir.getFullPathName().toStdString() + " -S " + rnboDirectory + " -B " + cmakebuildfolder.getFullPathName().toStdString();
+#elif JUCE_WINDOWS
+    std::string minGWExeStr = minGWlibDir.getChildFile("mingw32-make.exe").getFullPathName().replaceCharacters("\\", "/").toStdString();
+    std::string cCompilerStr = minGWlibDir.getChildFile("gcc.exe").getFullPathName().replaceCharacters("\\", "/").toStdString();
+    std::string cxxCompilerStr = minGWlibDir.getChildFile("g++.exe").getFullPathName().replaceCharacters("\\", "/").toStdString();
+    juce::String command = "set \"PATH=%PATH%;" + minGWlibDir.getFullPathName().toStdString() + "\" && " + cmakeDir.getFullPathName().toStdString() + " -S " +
+        rnboDirectory + " -B " + cmakebuildfolder.getFullPathName().toStdString() +
+        " -G \"MinGW Makefiles\" -DCMAKE_MAKE_PROGRAM=" + minGWExeStr + " -DCMAKE_C_COMPILER=" + cCompilerStr + " -DCMAKE_CXX_COMPILER=" + cxxCompilerStr;
+#endif
+
     cmdThread.startThreadWithCommand(command);
     cmdThread.waitForThreadToExit(60000);
     
@@ -151,9 +181,11 @@ bool RNBOFMODCompiler::CreateCMake()
 bool RNBOFMODCompiler::CompileCMake()
 {
     juce::File cmakebuildfolder = juce::File(rnboDirectory).getChildFile("CMake");
-    
+#if JUCE_MAC
     juce::String command = cmakeDir.getFullPathName().toStdString() + " --build " + cmakebuildfolder.getFullPathName().toStdString();
-    
+#elif JUCE_WINDOWS
+    juce::String command = "set \"PATH=%PATH%;" + minGWlibDir.getFullPathName().toStdString() + "\" && " + cmakeDir.getFullPathName().toStdString() + " --build " + cmakebuildfolder.getFullPathName().toStdString();
+#endif
     cmdThread.startThreadWithCommand(command);
     cmdThread.waitForThreadToExit(60000);
     
@@ -195,19 +227,20 @@ bool RNBOFMODCompiler::CheckCompilerInstall()
     juce::File appDir = juce::File::getSpecialLocation(juce::File::SpecialLocationType::currentApplicationFile);
     
 #if JUCE_MAC
-    //std::string command = "clang --version";
-    ninjaDir = appDir.getChildFile("Contents/Resources/External_Tools/ninja");
+    std::string command = "clang --version";
 #elif JUCE_WINDOWS
-    ninjaDir = appDir.getSiblingFile("External_Tools\\ninja");
+    minGWlibDir = appDir.getSiblingFile("External_Tools").getChildFile("w64devkit").getChildFile("bin");
+    if (!minGWlibDir.exists())
+        return 0;
+    //std::string command = "set \"PATH=%PATH%;" + minGWlibDir.getFullPathName().toStdString() + "\" && gcc --version";
+    std::string command = "set \"PATH=" + minGWlibDir.getFullPathName().toStdString() + "\" && gcc --version";
+    //std::string command = "cmake --version";
 #else
     std::string command = "error";
 #endif
     
-    if(!ninjaDir.existsAsFile())
-        return 0;
-    
-    std::string command = ninjaDir.getFullPathName().toStdString() + " --version";
-    
+    int result = -1;
+    /*
     juce::ChildProcess process;
     int result = -1;
     if(process.start(command.c_str()))
@@ -216,10 +249,12 @@ bool RNBOFMODCompiler::CheckCompilerInstall()
         process.waitForProcessToFinish(3000);
         result = process.getExitCode();
     }
+    */
+    result = system(command.c_str());
     
     return !result;
 }
-
+/*
 bool RNBOFMODCompiler::TryRemoveNinjaQuarantine()
 {
     if(!ninjaDir.existsAsFile())
@@ -248,7 +283,7 @@ bool RNBOFMODCompiler::TryRemoveNinjaQuarantine()
     
     return finalResult;
 }
-
+*/
 bool RNBOFMODCompiler::CheckRNBOSrc()
 {
     //the file with the rnbo export class
@@ -287,11 +322,17 @@ bool RNBOFMODCompiler::CheckExportDir()
 bool RNBOFMODCompiler::CheckRNBOFMODSrcs()
 {
     juce::File appDir = juce::File::getSpecialLocation(juce::File::SpecialLocationType::currentApplicationFile);
-
+#if JUCE_MAC
     rnbowrapperHpp = appDir.getChildFile("Contents/Resources/RNBOFMODSrc/RNBOWrapper.hpp");
     rnborwapperCpp = appDir.getChildFile("Contents/Resources/RNBOFMODSrc/RNBOWrapper.cpp");
     rnboFmod = appDir.getChildFile("Contents/Resources/RNBOFMODSrc/RNBO_FMOD.cpp");
     
+#elif JUCE_WINDOWS
+    rnbowrapperHpp = appDir.getSiblingFile("RNBOFMODSrc\\RNBOWrapper.hpp");
+    rnborwapperCpp = appDir.getSiblingFile("RNBOFMODSrc\\RNBOWrapper.cpp");
+    rnboFmod = appDir.getSiblingFile("RNBOFMODSrc\\RNBO_FMOD.cpp");
+
+#endif
     auto result = rnbowrapperHpp.existsAsFile() && rnborwapperCpp.existsAsFile() && rnboFmod.existsAsFile();
     
     if(!result)
