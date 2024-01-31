@@ -163,7 +163,7 @@ void MainComponent::filenameComponentChanged(juce::FilenameComponent *fileCompon
         valueTree.setProperty("rnboDir", temp, nullptr);
         rnboFmodCompiler->rnboDirectory = temp.toStdString();
         
-        pluginNameInputLabel->setText(TryGetPluginName(), juce::NotificationType::dontSendNotification);
+        pluginNameInputLabel->setText(TryGetPluginName(), juce::NotificationType::sendNotification);
     }
     else if(fileComponentThatHasChanged == fmodIncDir.get())
     {
