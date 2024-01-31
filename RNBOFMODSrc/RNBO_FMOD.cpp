@@ -147,7 +147,9 @@ FMOD_RESULT F_CALLBACK FMOD_RNBO_dspcreate(FMOD_DSP_STATE *dsp_state)
     void* rawData;
     FMOD_DSP_GETUSERDATA(dsp_state, &rawData);
     state->tailLength = ((size_t*)rawData)[FMOD_TAILLENGTH];
-    FMOD_DSP_LOG(dsp_state, FMOD_DEBUG_LEVEL_LOG, "Create","Tail is %ims", state->tailLength);
+    FMOD_DSP_GETSAMPLERATE(dsp_state, &state->sampleRate);
+    //FMOD_DSP_LOG(dsp_state, FMOD_DEBUG_LEVEL_LOG, "Create","Samprate is %i", state->sampleRate);
+    //FMOD_DSP_LOG(dsp_state, FMOD_DEBUG_LEVEL_LOG, "Create","Tail is %ims", state->tailLength);
     return FMOD_OK;
 }
 
@@ -186,7 +188,7 @@ FMOD_RESULT F_CALLBACK FMOD_RNBO_dspprocess(FMOD_DSP_STATE *dsp_state, unsigned 
         if(inputsidle && state->shouldGoIdle)
             return FMOD_ERR_DSP_DONTPROCESS;
         
-        while (!state->rnboObj->prepareToProcess(48000,4096)) {}
+        while (!state->rnboObj->prepareToProcess(state->sampleRate,4096)) {}
         
         if (outbufferarray)
         {
@@ -286,9 +288,9 @@ FMOD_RESULT F_CALLBACK FMOD_RNBO_dspgetparamdata(FMOD_DSP_STATE *dsp_state, int 
 {
     void* indexptr;
     FMOD_DSP_GETUSERDATA(dsp_state, &indexptr);
-    int **posIndex = static_cast<int**>(indexptr);
+    size_t *posIndex = static_cast<size_t*>(indexptr);
     
-    if(index == *posIndex[0])
+    if(index == posIndex[FMOD_3D_ATTR])
         return FMOD_ERR_INVALID_PARAM;
 
     return FMOD_ERR_INVALID_PARAM;

@@ -28,6 +28,7 @@ public:
     size_t timeStore = 0;
     size_t tailLength = 0;
     bool isInstrument = false;
+    int sampleRate = 48000;
     void init()
     {
         rnboObj = std::make_unique<RNBOObj>();
