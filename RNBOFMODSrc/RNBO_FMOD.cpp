@@ -41,7 +41,8 @@ FMOD_DSP_PARAMETER_DESC *FMOD_RNBO_dspparam[MAX_RNBO_PARAMETERS] = {};
 enum userStorageIndex
 {
     FMOD_3D_ATTR = 0,
-    FMOD_TAILLENGTH
+    FMOD_TAILLENGTH,
+    IS_INSTRUMENT
 };
 
 
@@ -121,14 +122,19 @@ F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMODGetDSPDescription()
         finalParameters++;
     }
     
-    FMOD_RNBO_Desc.userdata = &userData;
-    FMOD_RNBO_Desc.numparameters = finalParameters;
+    userData[IS_INSTRUMENT] = 1;
     
     if(obj.getNumInputChannels() > 0)
+    {
         FMOD_RNBO_Desc.numinputbuffers = 1;
+        userData[IS_INSTRUMENT] = 0;
+    }
     
     if(obj.getNumOutputChannels() > 0)
         FMOD_RNBO_Desc.numoutputbuffers = 1;
+    
+    FMOD_RNBO_Desc.userdata = &userData;
+    FMOD_RNBO_Desc.numparameters = finalParameters;
     
     return &FMOD_RNBO_Desc;
 }
@@ -147,9 +153,11 @@ FMOD_RESULT F_CALLBACK FMOD_RNBO_dspcreate(FMOD_DSP_STATE *dsp_state)
     void* rawData;
     FMOD_DSP_GETUSERDATA(dsp_state, &rawData);
     state->tailLength = ((size_t*)rawData)[FMOD_TAILLENGTH];
+    state->isInstrument = ((size_t*)rawData)[IS_INSTRUMENT];
     FMOD_DSP_GETSAMPLERATE(dsp_state, &state->sampleRate);
     //FMOD_DSP_LOG(dsp_state, FMOD_DEBUG_LEVEL_LOG, "Create","Samprate is %i", state->sampleRate);
     //FMOD_DSP_LOG(dsp_state, FMOD_DEBUG_LEVEL_LOG, "Create","Tail is %ims", state->tailLength);
+    //FMOD_DSP_LOG(dsp_state, FMOD_DEBUG_LEVEL_LOG, "Create","Is Instrument: %i", state->isInstrument);
     return FMOD_OK;
 }
 
@@ -205,7 +213,7 @@ FMOD_RESULT F_CALLBACK FMOD_RNBO_dspprocess(FMOD_DSP_STATE *dsp_state, unsigned 
 #elif _WIN64
     state->rnboObj->process<float*>(inbufferarray[0].buffers[0], numInChans, outbufferarray[0].buffers[0], numChans, length);
 #endif
-    if(state->inputsIdle)
+    if(!state->isInstrument && state->inputsIdle)
     {
         if (state->tailLength <= 0)
         {

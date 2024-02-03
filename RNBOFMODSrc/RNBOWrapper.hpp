@@ -22,12 +22,12 @@ class RNBOWrapper
 {
 public:
     std::unique_ptr<RNBOObj> rnboObj;
+    size_t isInstrument = 1;
     FMOD_BOOL inputsIdle = 0;
     FMOD_BOOL lastIdleState = 0;
     bool shouldGoIdle = false;
     size_t timeStore = 0;
     size_t tailLength = 0;
-    bool isInstrument = false;
     int sampleRate = 48000;
     void init()
     {
