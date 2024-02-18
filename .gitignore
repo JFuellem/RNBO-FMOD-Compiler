@@ -35,3 +35,5 @@ Builds/
 JuceLibraryCode/
 External_Tools/
 WinSetup/RNBOFMOD_Setup/Release/
+
+InstallerProj/RNBO_FMOD_Compiler_Setup/RNBO_FMOD_Compiler_Setup/Release/
