@@ -1,0 +1,3 @@
+[submodule "RNBO-FMOD-Wrapper"]
+	path = RNBO-FMOD-Wrapper
+	url = https://github.com/JFuellem/RNBO-FMOD-Wrapper.git
