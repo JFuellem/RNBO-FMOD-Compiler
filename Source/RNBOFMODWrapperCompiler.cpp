@@ -321,14 +321,14 @@ bool RNBOFMODCompiler::CheckRNBOFMODSrcs()
 {
     juce::File appDir = juce::File::getSpecialLocation(juce::File::SpecialLocationType::currentApplicationFile);
 #if JUCE_MAC
-    rnbowrapperHpp = appDir.getChildFile("Contents/Resources/RNBOFMODSrc/RNBOWrapper.hpp");
-    rnborwapperCpp = appDir.getChildFile("Contents/Resources/RNBOFMODSrc/RNBOWrapper.cpp");
-    rnboFmod = appDir.getChildFile("Contents/Resources/RNBOFMODSrc/RNBO_FMOD.cpp");
+    rnbowrapperHpp = appDir.getChildFile("Contents/Resources/RNBOWrapper/RNBOWrapper.hpp");
+    rnborwapperCpp = appDir.getChildFile("Contents/Resources/RNBOWrapper/RNBOWrapper.cpp");
+    rnboFmod = appDir.getChildFile("Contents/Resources/RNBOWrapper/RNBO_FMOD.cpp");
     
 #elif JUCE_WINDOWS
-    rnbowrapperHpp = appDir.getSiblingFile("RNBOFMODSrc\\RNBOWrapper.hpp");
-    rnborwapperCpp = appDir.getSiblingFile("RNBOFMODSrc\\RNBOWrapper.cpp");
-    rnboFmod = appDir.getSiblingFile("RNBOFMODSrc\\RNBO_FMOD.cpp");
+    rnbowrapperHpp = appDir.getSiblingFile("RNBOWrapper\\RNBOWrapper.hpp");
+    rnborwapperCpp = appDir.getSiblingFile("RNBOWrapper\\RNBOWrapper.cpp");
+    rnboFmod = appDir.getSiblingFile("RNBOWrapper\\RNBO_FMOD.cpp");
 
 #endif
     auto result = rnbowrapperHpp.existsAsFile() && rnborwapperCpp.existsAsFile() && rnboFmod.existsAsFile();

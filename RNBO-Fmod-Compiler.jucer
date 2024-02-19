@@ -37,7 +37,7 @@
   </MODULES>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
   <EXPORTFORMATS>
-    <XCODE_MAC targetFolder="Builds/MacOSX" customXcodeResourceFolders="./External_Tools&#10;./RNBOFMODSrc"
+    <XCODE_MAC targetFolder="Builds/MacOSX" customXcodeResourceFolders="./External_Tools&#10;./RNBO-FMOD-Wrapper/RNBOWrapper"
                appSandboxOptions="com.apple.security.assets.movies.read-only,com.apple.security.assets.movies.read-write,com.apple.security.assets.music.read-only,com.apple.security.assets.music.read-write,com.apple.security.files.downloads.read-only,com.apple.security.files.downloads.read-write,com.apple.security.files.pictures.read-only,com.apple.security.files.pictures.read-write,com.apple.security.files.user-selected.read-only,com.apple.security.files.user-selected.read-write"
                smallIcon="r5nFQ8" bigIcon="r5nFQ8">
       <CONFIGURATIONS>
