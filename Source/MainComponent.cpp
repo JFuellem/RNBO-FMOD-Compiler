@@ -181,10 +181,14 @@ void MainComponent::filenameComponentChanged(juce::FilenameComponent *fileCompon
 
 std::string MainComponent::TryGetPluginName()
 {
-    juce::File rnboSrc = juce::File(rnboFmodCompiler->rnboDirectory).getChildFile("rnbo_source.cpp");
-    if(rnboSrc.existsAsFile())
+    //juce::File rnboSrc = juce::File(rnboFmodCompiler->rnboDirectory).getChildFile("rnbo_source.cpp");
+    auto cppFiles = juce::File(rnboFmodCompiler->rnboDirectory).findChildFiles(juce::File::TypesOfFileToFind::findFiles, false, "*.cpp");
+    if(cppFiles.size() > 1)
+        JRFConsole::warn << "The RNBO Export Directory contains more than one .cpp file. This can cause issues." << std::endl;
+    
+    if(cppFiles[0].existsAsFile())
     {
-        juce::FileInputStream instream(rnboSrc);
+        juce::FileInputStream instream(cppFiles[0]);
         if(!instream.openedOk())
             return "DefaultName";
         juce::String line;

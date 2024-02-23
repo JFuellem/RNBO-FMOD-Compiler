@@ -50,7 +50,6 @@ public:
     bool CheckDynamicCompileComponents();
     bool CheckCmakeInstall();
     bool CheckCompilerInstall();
-    //bool TryRemoveNinjaQuarantine();
     
     void addCompileListener(CompileListener* listener) { compileListeners.add(listener); }
     void removeCompileListener(CompileListener* listener) { compileListeners.remove(listener); }

@@ -284,8 +284,11 @@ bool RNBOFMODCompiler::TryRemoveNinjaQuarantine()
 */
 bool RNBOFMODCompiler::CheckRNBOSrc()
 {
+    auto cppFiles = juce::File(rnboDirectory).findChildFiles(juce::File::TypesOfFileToFind::findFiles, false, "*.cpp");
     //the file with the rnbo export class
-    rnbo_src = juce::File(rnboDirectory).getChildFile("rnbo_source.cpp");
+    if(cppFiles.size() != 0)
+        rnbo_src = cppFiles[0];
+    //rnbo_src = juce::File(rnboDirectory).getChildFile("rnbo_source.cpp");
     rnbo_src2 = juce::File(rnboDirectory).getChildFile("rnbo").getChildFile("RNBO.h");
     rnbo_src3 = juce::File(rnboDirectory).getChildFile("rnbo").getChildFile("RNBO.cpp");
     auto result = rnbo_src.existsAsFile() && rnbo_src2.existsAsFile() && rnbo_src3.existsAsFile();
