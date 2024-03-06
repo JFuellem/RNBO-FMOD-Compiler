@@ -124,6 +124,7 @@ bool RNBOFMODCompiler::CreateCMakeLists()
         outStream.writeText(juce::String("cmake_minimum_required(VERSION 3.10.0)") + juce::newLine, false, false, nullptr);
         outStream.writeText(juce::String("project(") + PluginName + ")" + juce::newLine, false, false, nullptr);
         outStream.writeText(juce::String("set(CMAKE_CXX_STANDARD 14)") + juce::newLine, false, false, nullptr);
+        outStream.writeText(juce::String("set(CMAKE_CXX_FLAGS -Ofast)") + juce::newLine, false, false, nullptr);
         //outStream.writeText(juce::String("set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ") + exportDirectory + ")" + juce::newLine, false, false, nullptr);
         outStream.writeText(juce::String("add_library(${PROJECT_NAME} SHARED ") + trnboWrapperHpp + trnboWrapperCpp + trnboFmodCpp + trnboSrc1 + trnboSrc2 + trnboSrc3 + ")" + juce::newLine, false, false, nullptr);
 #if JUCE_MAC
