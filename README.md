@@ -4,7 +4,7 @@ This App is built to make plugins for the FMOD Engine with Cycling 74 RNBO as ea
 
 ## Needed Steps RNBO
 
-1. Name your Plugin by adding a |param| object with argument ```NAME_<PluginName>```
+1. Name your Plugin by adding a |param| object with argument ```Name_<PluginName>```
 2. Create an RNBO patch as you like either as an instrument or effect. The presence of in~ and out~ objects determines the type.
 3. Add |param| objects that you need. min, max, value and unit attributes will automatically be transferred.
 4. Optionally add any or multiple of the following |inports| that will receive 3d-Attributes from the source as a list:
