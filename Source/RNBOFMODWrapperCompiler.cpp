@@ -126,15 +126,15 @@ bool RNBOFMODCompiler::CreateCMakeLists()
         outStream.writeText(juce::String("set(CMAKE_CXX_STANDARD 14)") + juce::newLine, false, false, nullptr);
         outStream.writeText(juce::String("set(CMAKE_CXX_FLAGS -Ofast)") + juce::newLine, false, false, nullptr);
         //outStream.writeText(juce::String("set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ") + exportDirectory + ")" + juce::newLine, false, false, nullptr);
-        outStream.writeText(juce::String("add_library(${PROJECT_NAME} SHARED ") + trnboWrapperHpp + trnboWrapperCpp + trnboFmodCpp + trnboSrc1 + trnboSrc2 + trnboSrc3 + ")" + juce::newLine, false, false, nullptr);
+        outStream.writeText(juce::String("add_library(\"${PROJECT_NAME}\" SHARED ") + trnboWrapperHpp + trnboWrapperCpp + trnboFmodCpp + trnboSrc1 + trnboSrc2 + trnboSrc3 + ")" + juce::newLine, false, false, nullptr);
 #if JUCE_MAC
-        outStream.writeText(juce::String("set_target_properties(${PROJECT_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ") + exportDirectory + ")" + juce::newLine, false, false, nullptr);
+        outStream.writeText(juce::String("set_target_properties(\"${PROJECT_NAME}\" PROPERTIES LIBRARY_OUTPUT_DIRECTORY ") + exportDirectory + ")" + juce::newLine, false, false, nullptr);
 #elif JUCE_WINDOWS
         outStream.writeText(juce::String("set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ") + exportDirectory + ")" + juce::newLine, false, false, nullptr);
 #endif
-        outStream.writeText(juce::String("target_include_directories(${PROJECT_NAME} PRIVATE ") + trnboInc1 + ")" + juce::newLine, false, false, nullptr);
-        outStream.writeText(juce::String("target_include_directories(${PROJECT_NAME} PRIVATE ") + trnboInc2 + ")" + juce::newLine, false, false, nullptr);
-        outStream.writeText(juce::String("target_include_directories(${PROJECT_NAME} PRIVATE ") + fmodIncDirectory + ")" + juce::newLine, false, false, nullptr);
+        outStream.writeText(juce::String("target_include_directories(\"${PROJECT_NAME}\" PRIVATE ") + trnboInc1 + ")" + juce::newLine, false, false, nullptr);
+        outStream.writeText(juce::String("target_include_directories(\"${PROJECT_NAME}\" PRIVATE ") + trnboInc2 + ")" + juce::newLine, false, false, nullptr);
+        outStream.writeText(juce::String("target_include_directories(\"${PROJECT_NAME}\" PRIVATE ") + fmodIncDirectory + ")" + juce::newLine, false, false, nullptr);
 
         outStream.flush();
 
